@@ -2,9 +2,9 @@
 
 [Paper](https://arxiv.org/abs/2609.32771) · [TPU implementation](#environment) · [Reproduction protocol](#released-csqa-protocol)
 
-This repository contains a JAX/Google TPU implementation used to reproduce the released CPLUS comparison. CPLUS preserves previously acquired behavior by using a compact set of real anchors together with self-probes generated and labeled by the frozen base model. Their gradients define an optimizer-update mask; supervised fine-tuning on initially incorrect examples supplies the learning signal.
+This repository contains a JAX/Google TPU implementation for CPLUS. CPLUS preserves previously acquired behavior by using a compact set of real anchors together with self-probes generated and labeled by the frozen base model. Their gradients define an optimizer-update mask; supervised fine-tuning on initially incorrect examples supplies the learning signal.
 
-The released protocol is deliberately small and fully specified: one Qwen3 model, CommonsenseQA, two anchor budgets, and one seed.
+The public reproduction workflow runs Qwen3-0.6B on CommonsenseQA with anchor budgets `8` and `16`.
 
 ## Quick start
 
@@ -30,7 +30,7 @@ The launcher validates the prepared input, writes the exact nine-command plan to
 | Item | Setting |
 | --- | --- |
 | Model | Qwen3-0.6B, pinned revision in `configs/reproduction_matrix.json` |
-| Benchmark | Prepared four-option CommonsenseQA input (1,096 examples) |
+| Benchmark | CommonsenseQA (CSQA) |
 | Anchor budgets | `A = 8, 16` |
 | Seed | `0` |
 | CPLUS self-probes | `N = 512` |
@@ -81,15 +81,15 @@ The requirements file expresses installation constraints rather than a frozen ru
 
 ## Data
 
-Place the normalized protocol input at `data/inputs/csqa.jsonl`. It is not included in this repository; benchmark redistribution remains subject to the dataset's terms. The driver uses this same file for all four methods, evaluates the frozen checkpoint, and deterministically produces model-specific initially-correct and initially-incorrect splits.
+CommonsenseQA is publicly available. Place the task-formatted input at `data/inputs/csqa.jsonl`; the driver uses the same file for all four methods, evaluates the frozen checkpoint, and deterministically produces model-specific initially-correct and initially-incorrect splits.
 
-The input must contain 1,096 JSONL rows with a four-option prompt in `question` and an `A`–`D` answer letter in `label`. Validate its shape and record its digest before running:
+Validate the input before running:
 
 ```bash
 python scripts/validate_csqa_input.py data/inputs/csqa.jsonl
 ```
 
-See [`data/README.md`](data/README.md) for the exact row format and the provenance fields to keep with the prepared input. In particular, CommonsenseQA's raw release is not itself this four-option protocol file; use the documented protocol preparation rather than an ad hoc answer-choice conversion.
+See [`data/README.md`](data/README.md) for the task input format.
 
 ## Reproduce the released comparison
 
