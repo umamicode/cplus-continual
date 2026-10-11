@@ -139,13 +139,13 @@ Code in this repository is released under the [Apache License 2.0](LICENSE). Mod
 ## Citation
 
 ```bibtex
-@misc{cho2026continual,
+@misc{cho2026continuallearningselfprobegradients,
   title={Continual Learning via Self-Probe Gradients},
-  author={Cho, Dongkyu and Chunara, Rumi and Cha, Sungmin},
+  author={Dongkyu Cho and Rumi Chunara and Sungmin Cha},
   year={2026},
   eprint={2609.32771},
   archivePrefix={arXiv},
   primaryClass={cs.LG},
-  url={https://arxiv.org/abs/2609.32771}
+  url={https://arxiv.org/abs/2609.32771},
 }
 ```
