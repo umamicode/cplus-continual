@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "paper_method": "CPLUS: Collaborative Parameter Learning Using Self-Probe Gradients",
+  "backend": {
+    "framework": "jax",
+    "accelerator": "google_tpu",
+    "model_compute_precision": "bfloat16"
+  },
+  "models": {
+    "0.6B": {
+      "id": "Qwen/Qwen3-0.6B",
+      "revision": "c1899de289a04d12100db370d81485cdf75e47ca"
+    },
+    "1.7B": {
+      "id": "Qwen/Qwen3-1.7B",
+      "revision": "70d244cc86ccca08cf5af4e1e306ecf908b1ad5e"
+    },
+    "4B": {
+      "id": "Qwen/Qwen3-4B",
+      "revision": "1cfa9a7208912126459214e8b04321603b3df60c"
+    }
+  },
+  "main_csqa": {
+    "model_size": "0.6B",
+    "task": "csqa",
+    "anchors": [8, 16],
+    "methods": ["sft", "replay", "cpl", "cplus"],
+    "seeds": [0],
+    "metrics": ["retention", "acquisition"]
+  },
+  "cplus": {
+    "self_probe_count": 512,
+    "icl_examples": 2,
+    "generation_temperature": 0.8,
+    "probe_label": "frozen_model_argmax",
+    "reference_reduction": "mean",
+    "anchor_weight": 0.5,
+    "probe_weight": 0.5,
+    "norm_alignment": false,
+    "mask_stage": "optimizer_update",
+    "mask_ema_beta": 0.9
+  },
+  "training": {
+    "optimizer": "adamw",
+    "learning_rate": 1e-6,
+    "weight_decay": 0.1,
+    "epochs": 25,
+    "correct_subset_mode": "nested",
+    "correct_eval_scope": "all"
+  }
+}

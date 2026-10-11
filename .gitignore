@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+.venv*/
+artifacts/
+outputs/
+weights/
+*.safetensors
+*.pt
+*.pth
+*.ckpt
+*.zip

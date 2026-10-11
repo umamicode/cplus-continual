@@ -1,0 +1,11 @@
+jax[tpu]
+optax
+transformers>=4.51.0,<5
+tqdm
+numpy
+safetensors
+huggingface-hub[hf-xet]
+datasets>=2.19,<5
+zstandard
+jinja2
+python-chess==1.999
