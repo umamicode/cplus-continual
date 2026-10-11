@@ -6,6 +6,25 @@ This repository contains a JAX/Google TPU implementation used to reproduce the r
 
 The released protocol is deliberately small and fully specified: one Qwen3 model, CommonsenseQA, two anchor budgets, and one seed.
 
+## Quick start
+
+Run the released comparison from a Google TPU environment:
+
+```bash
+git clone https://github.com/umamicode/cplus-continual.git
+cd cplus-continual
+
+python -m venv .venv-tpu
+source .venv-tpu/bin/activate
+pip install -r requirements-tpu.txt
+python scripts/download_models.py --output-root weights --model-size 0.6B
+
+python scripts/validate_csqa_input.py data/inputs/csqa.jsonl
+bash experiments/run_csqa_main.sh data/inputs/csqa.jsonl weights artifacts/csqa-main
+```
+
+The launcher validates the prepared input, writes the exact nine-command plan to the output directory, and executes those commands serially on the configured TPU allocation. It never downloads benchmark data or enables experiment tracking.
+
 ## Released CSQA protocol
 
 | Item | Setting |
@@ -35,6 +54,8 @@ Retention is the fraction of initially correct examples that remain correct afte
 ```text
 configs/reproduction_matrix.json  locked released-protocol settings
 data/README.md                    prepared input contract and provenance record
+experiments/run_csqa_main.sh      run the released nine-job CSQA protocol
+experiments/README.md             experiment entry-point documentation
 jax_sft/                          JAX/TPU model, training, replay, and masking code
 scripts/download_models.py        download the pinned public Qwen3 revision
 scripts/validate_csqa_input.py    validate the CSQA protocol input and report its SHA-256
@@ -72,7 +93,9 @@ See [`data/README.md`](data/README.md) for the exact row format and the provenan
 
 ## Reproduce the released comparison
 
-Print the fixed plan, inspect it, and run it from a TPU environment:
+The quickstart command above is the recommended entry point. It writes `csqa-main-commands.sh` into the chosen output directory before executing it, so the exact run plan is retained with the artifacts.
+
+To inspect the fixed plan without executing it:
 
 ```bash
 python scripts/print_csqa_main_grid.py \

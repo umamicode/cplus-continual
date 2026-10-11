@@ -21,6 +21,8 @@ SOURCE_PATTERNS = (
     "requirements-tpu.txt",
     "configs/reproduction_matrix.json",
     "data/README.md",
+    "experiments/**/*.md",
+    "experiments/**/*.sh",
     "jax_sft/**/*.py",
     "jax_sft/**/*.sh",
     "jax_sft/**/README.md",
